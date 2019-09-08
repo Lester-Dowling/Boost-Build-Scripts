@@ -1,2 +1,2 @@
 # Boost-Build-Scripts
-Powershell scripts I use to build Boost locally.
+Scripts I use to build Boost locally, and build with Boost.
