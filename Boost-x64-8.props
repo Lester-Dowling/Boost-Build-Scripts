@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Externally defined environment variables:                       -->
+  <!--     BOOST_ROOT                                                  -->
+  <!--     BOOST_VERSION                                               -->
+  <!-- For example:                                                    -->
+  <!--     BOOST_ROOT    = C:\boost_MSVC_2017_x64\include\boost-1_71   -->
+  <!--     BOOST_VERSION = 1_71                                        -->
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <BOOST_VC_TAG Condition="'$(PlatformToolset)' == 'v141'">vc141</BOOST_VC_TAG>
+    <BOOST_VC_TAG Condition="'$(PlatformToolset)' == 'v142'">vc142</BOOST_VC_TAG>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="UserMacros">
+    <BOOST_LIBRARY_TAG>-$(BOOST_VC_TAG)-mt-gd-x64-$(BOOST_VERSION)</BOOST_LIBRARY_TAG>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="UserMacros">
+    <BOOST_LIBRARY_TAG>-$(BOOST_VC_TAG)-mt-x64-$(BOOST_VERSION)</BOOST_LIBRARY_TAG>
+  </PropertyGroup>
+  <PropertyGroup Label="UserMacros">
+    <BOOST_LIB>$(BOOST_ROOT)/../../lib</BOOST_LIB>
+    <BOOST_SYSTEM>boost_system$(BOOST_LIBRARY_TAG)</BOOST_SYSTEM>
+    <BOOST_FILESYSTEM>boost_filesystem$(BOOST_LIBRARY_TAG)</BOOST_FILESYSTEM>
+    <BOOST_DATE_TIME>boost_date_time$(BOOST_LIBRARY_TAG)</BOOST_DATE_TIME>
+    <BOOST_PROGRAM_OPTIONS>boost_program_options$(BOOST_LIBRARY_TAG)</BOOST_PROGRAM_OPTIONS>
+    <BOOST_RANDOM>boost_random$(BOOST_LIBRARY_TAG)</BOOST_RANDOM>
+    <BOOST_SERIALIZATION>boost_serialization$(BOOST_LIBRARY_TAG)</BOOST_SERIALIZATION>
+    <BOOST_REGEX>boost_regex$(BOOST_LIBRARY_TAG)</BOOST_REGEX>
+    <BOOST_UNIT_TEST_FRAMEWORK>boost_unit_test_framework$(BOOST_LIBRARY_TAG)</BOOST_UNIT_TEST_FRAMEWORK>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>
+        $(BOOST_ROOT);
+        %(AdditionalIncludeDirectories)
+      </AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>
+        BOOST_ALL_DYN_LINK;
+        BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE;
+        %(PreprocessorDefinitions)
+      </PreprocessorDefinitions>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>
+        START /MIN "RoboCopy of Boost redist to build output directory" ^
+        ROBOCOPY   /LOG:"$(OutDir)Log-RoboCopy-Boost.txt" ^
+        /COPY:DATSO  /NP  /R:2  /W:2 ^
+        $(BOOST_LIB) ^
+        $(OutDir) ^
+        $(BOOST_SYSTEM).dll ^
+        $(BOOST_FILESYSTEM).dll ^
+        $(BOOST_DATE_TIME).dll ^
+        $(BOOST_PROGRAM_OPTIONS).dll ^
+        $(BOOST_RANDOM).dll ^
+        $(BOOST_SERIALIZATION).dll ^
+        $(BOOST_REGEX).dll ^
+        $(BOOST_UNIT_TEST_FRAMEWORK)
+        %(Command)
+      </Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>
+        $(BOOST_SYSTEM).lib;
+        $(BOOST_FILESYSTEM).lib;
+        $(BOOST_DATE_TIME).lib;
+        $(BOOST_PROGRAM_OPTIONS).lib;
+        $(BOOST_RANDOM).lib;
+        $(BOOST_SERIALIZATION).lib;
+        $(BOOST_REGEX).lib;
+        $(BOOST_UNIT_TEST_FRAMEWORK);
+        %(AdditionalDependencies)
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+        $(BOOST_LIB);
+        %(AdditionalLibraryDirectories)
+      </AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="BOOST_LIBRARY_TAG">
+      <Value>$(BOOST_LIBRARY_TAG)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BOOST_LIB">
+      <Value>$(BOOST_LIB)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BOOST_VC_TAG">
+      <Value>$(BOOST_VC_TAG)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BOOST_SYSTEM">
+      <Value>$(BOOST_SYSTEM)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BOOST_FILESYSTEM">
+      <Value>$(BOOST_FILESYSTEM)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BOOST_DATE_TIME">
+      <Value>$(BOOST_DATE_TIME)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BOOST_PROGRAM_OPTIONS">
+      <Value>$(BOOST_PROGRAM_OPTIONS)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BOOST_RANDOM">
+      <Value>$(BOOST_RANDOM)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BOOST_SERIALIZATION">
+      <Value>$(BOOST_SERIALIZATION)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BOOST_REGEX">
+      <Value>$(BOOST_REGEX)</Value>
+    </BuildMacro>
+    <BuildMacro Include="BOOST_UNIT_TEST_FRAMEWORK">
+      <Value>$(BOOST_UNIT_TEST_FRAMEWORK)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
